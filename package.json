@@ -1,0 +1,23 @@
+{
+  "name": "project-2-api",
+  "version": "1.0.0",
+  "description": "api for project 2",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/henro47/project-2-api.git"
+  },
+  "author": "HFR Potgieter",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/henro47/project-2-api/issues"
+  },
+  "homepage": "https://github.com/henro47/project-2-api#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
