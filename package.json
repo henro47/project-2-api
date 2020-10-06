@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/henro47/project-2-api#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "morgan": "^1.10.0"
   }
 }
