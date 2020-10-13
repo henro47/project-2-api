@@ -2,8 +2,14 @@ const express = require('express');
 const app = express();
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 
-const helloWorldRoutes = require('./api/routes/helloworld');
+const userRoute = require('./api/routes/user');
+
+mongoose.connect('mongodb+srv://admin:F9o2hazaiDhV5oIE@node-rest-api.iszlv.mongodb.net/node-rest-api?retryWrites=true&w=majority',{
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+});
 
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({
@@ -24,7 +30,7 @@ app.use((req, res, next) => {
     next();
 })
 
-app.use('/helloworld',helloWorldRoutes);
+app.use('/user',userRoute);
 
 app.use((req, res, next) => {
     const error = new Error('Not found!');
