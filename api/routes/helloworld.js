@@ -6,9 +6,15 @@ router.get('/', (req, res, next) =>{
         name: req.body.message
     };*/
     res.status(200).json({
-        message: 'Hello World! GET!',
+        message: 'Hello World! GET!'
         //bodyMessage: name
     });
+});
+
+router.post('/',(req, res, next) =>{
+    res.status(200).json({
+        message: 'Hello World! Post!'
+    })
 });
 
 
