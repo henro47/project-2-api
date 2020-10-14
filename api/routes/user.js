@@ -56,7 +56,7 @@ router.post('/',(req, res, next) =>{
 
     const user = new User({
         _id: new mongoose.Types.ObjectId(),
-        idNum: req.body.id,
+        idNum: req.body.idNum,
         fName: req.body.fName,
         lName: req.body.lName,
         email: req.body.email
@@ -78,7 +78,7 @@ router.post('/',(req, res, next) =>{
 
 //FIx this
 router.patch('/:userId', (req, res, next) =>{
-    const id = req.body.userId;
+    const id = req.params.userId;
     const updateOps = {};
 
     for(const ops of req.body)
