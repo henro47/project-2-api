@@ -3,10 +3,11 @@ const app = express();
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+require('dotenv').config();
 
 const userRoute = require('./api/routes/user');
 
-mongoose.connect('mongodb+srv://admin:F9o2hazaiDhV5oIE@node-rest-api.iszlv.mongodb.net/node-rest-api?retryWrites=true&w=majority',{
+mongoose.connect('mongodb+srv://admin:' + process.env.DB_PASSWORD + '@node-rest-api.iszlv.mongodb.net/' + process.env.DB_NAME +'?retryWrites=true&w=majority',{
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
