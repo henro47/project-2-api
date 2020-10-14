@@ -76,7 +76,6 @@ router.post('/',(req, res, next) =>{
     });
 });
 
-//FIx this
 router.patch('/:userId', (req, res, next) =>{
     const id = req.params.userId;
     const updateOps = {};
