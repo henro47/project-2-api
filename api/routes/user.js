@@ -82,10 +82,10 @@ router.post('/',(req, res, next) =>{
 
     const user = new User({
         _id: new mongoose.Types.ObjectId(),
-        idNum: req.params.idNum,
-        fName: req.params.fName,
-        lName: req.params.lName,
-        email: req.params.email
+        idNum: req.body.idNum,
+        fName: req.body.fName,
+        lName: req.body.lName,
+        email: req.body.email
     });
     user.save().then(result =>{
         console.log(result);
