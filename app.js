@@ -12,9 +12,11 @@ mongoose.connect('mongodb+srv://admin:' + process.env.DB_PASSWORD + '@node-rest-
     useUnifiedTopology: true
 });
 
+mongoose.Promise = global.Promise;
+
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({
-    extended: false
+    extended: true
 }));
 
 app.use(bodyParser.json());

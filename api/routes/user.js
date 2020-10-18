@@ -4,10 +4,27 @@ const User = require('../models/userSchema');
 const mongoose = require('mongoose');
 
 router.get('/',(req, res, next) => {
-    User.find().exec()
+    User.find()
+    .select('_id idNum fName lName email')
+    .exec()
     .then(docs => {
-        console.log(docs);
-        res.status(200).json(docs);
+        const response = {
+            count: docs.length,
+            users: docs.map(doc => {
+                return {
+                    _id: doc._id,
+                    idNum : doc.idNum,
+                    fName : doc.fName,
+                    lName : doc.lName,
+                    email : doc.email,
+                    request : {
+                        type : 'GET',
+                        url : 'https://project-2-api-hfr.herokuapp.com/user/' + doc._id
+                    }
+                }
+            })
+        }
+        res.status(200).json(response);
         /*if(docs.length >= 0)
         {
             
@@ -30,12 +47,21 @@ router.get('/',(req, res, next) => {
 
 router.get('/:userId', (req, res, next) =>{
     const id = req.params.userId;
-    User.findById(id).exec()
+    User.findById(id)
+    .select('_id idNum fName lName email')
+    .exec()
     .then(doc => {
         if(doc)
         {
-            res.status(200).json(doc);
+            res.status(200).json({
+                user : doc,
+                request: {
+                    type : 'GET',
+                    description : 'Get all users',
+                    url : 'https://project-2-api-hfr.herokuapp.com/user/'
 
+                }
+            });
         }
         else
         {
@@ -56,7 +82,7 @@ router.post('/',(req, res, next) =>{
 
     const user = new User({
         _id: new mongoose.Types.ObjectId(),
-        idNum: req.body.id,
+        idNum: req.body.idNum,
         fName: req.body.fName,
         lName: req.body.lName,
         email: req.body.email
@@ -64,8 +90,18 @@ router.post('/',(req, res, next) =>{
     user.save().then(result =>{
         console.log(result);
         res.status(200).json({
-            message: 'Handling POST requests to /user',
-            createdUser: user
+            message: 'Created user successfully',
+            createdUser: {
+                _id: result._id,
+                idNum : result.idNum,
+                fName : result.fName,
+                lName : result.lName,
+                email : result.email,
+                request : {
+                    Type : 'GET',
+                    url: 'https://project-2-api-hfr.herokuapp.com/user/' + result._id
+                }
+            }
         });
     })
     .catch(err =>{
@@ -76,9 +112,8 @@ router.post('/',(req, res, next) =>{
     });
 });
 
-//FIx this
 router.patch('/:userId', (req, res, next) =>{
-    const id = req.body.userId;
+    const id = req.params.userId;
     const updateOps = {};
 
     for(const ops of req.body)
@@ -88,8 +123,13 @@ router.patch('/:userId', (req, res, next) =>{
 
     User.update({_id: id}, {$set: updateOps}).exec()
     .then(result => {
-        console.log(result);
-        res.status(200).json(result);
+        res.status(200).json({
+            message: 'User updated',
+            request : {
+                type : 'GET',
+                url : 'https://project-2-api-hfr.herokuapp.com/user/' + id
+            }
+        });
     })
     .catch(err => {
         console.log(err);
@@ -104,7 +144,19 @@ router.delete('/:userId', (req, res, next) =>{
     const id = req.params.userId;
     User.remove({_id: id}).exec()
     .then(result => {
-        res.status(200).json(result);
+        res.status(200).json({
+            message : 'User deleted successfully',
+            request: {
+                type : 'POST',
+                url : 'https://project-2-api-hfr.herokuapp.com/user/',
+                body: {
+                    id : 'String',
+                    fName : 'String',
+                    lName : 'String',
+                    email : 'String'
+                }
+            }
+        });
     })
     .catch(err => {
         console.log(err);
