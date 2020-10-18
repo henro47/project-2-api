@@ -19,7 +19,7 @@ router.get('/',(req, res, next) => {
                     email : doc.email,
                     request : {
                         type : 'GET',
-                        url : 'http://localhost:5000/user/' + doc._id
+                        url : 'https://project-2-api-hfr.herokuapp.com/user/' + doc._id
                     }
                 }
             })
@@ -58,7 +58,7 @@ router.get('/:userId', (req, res, next) =>{
                 request: {
                     type : 'GET',
                     description : 'Get all users',
-                    url : 'http://localhost:5000/user/'
+                    url : 'https://project-2-api-hfr.herokuapp.com/user/'
 
                 }
             });
@@ -99,7 +99,7 @@ router.post('/',(req, res, next) =>{
                 email : result.email,
                 request : {
                     Type : 'GET',
-                    url: 'http://localhost:5000/user/' + result._id
+                    url: 'https://project-2-api-hfr.herokuapp.com/user/' + result._id
                 }
             }
         });
@@ -127,7 +127,7 @@ router.patch('/:userId', (req, res, next) =>{
             message: 'User updated',
             request : {
                 type : 'GET',
-                url : 'http://localhost:5000/user/' + id
+                url : 'https://project-2-api-hfr.herokuapp.com/user/' + id
             }
         });
     })
@@ -148,7 +148,7 @@ router.delete('/:userId', (req, res, next) =>{
             message : 'User deleted successfully',
             request: {
                 type : 'POST',
-                url : 'http://localhost:5000/user/',
+                url : 'https://project-2-api-hfr.herokuapp.com/user/',
                 body: {
                     id : 'String',
                     fName : 'String',
