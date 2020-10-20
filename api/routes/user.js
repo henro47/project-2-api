@@ -4,6 +4,7 @@ const User = require('../models/userSchema');
 const mongoose = require('mongoose');
 const bycrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const checkAuth = require('../middleware/check-auth');
 require('dotenv').config();
 
 router.get('/',(req, res, next) => {
@@ -71,7 +72,7 @@ router.get('/:userId', (req, res, next) =>{
     });
 });
 
-router.post('/',(req, res, next) =>{
+router.post('/', checkAuth ,(req, res, next) =>{
 
     const user = new User({
         _id: new mongoose.Types.ObjectId(),
@@ -111,7 +112,7 @@ router.post('/',(req, res, next) =>{
     });
 });
 
-router.patch('/:userId', (req, res, next) =>{
+router.patch('/:userId', checkAuth ,(req, res, next) =>{
     const id = req.params.userId;
     const updateOps = {};
 
@@ -139,7 +140,7 @@ router.patch('/:userId', (req, res, next) =>{
 
 });
 
-router.delete('/:userId', (req, res, next) =>{
+router.delete('/:userId', checkAuth,(req, res, next) =>{
     const id = req.params.userId;
     User.remove({_id: id}).exec()
     .then(result => {
@@ -212,7 +213,7 @@ router.post('/signup',(req, res, next) =>{
     }) 
 });
 
-router.post('/login', (req, res, next) =>{
+router.post('/login', checkAuth ,(req, res, next) =>{
     User.find({email: req.body.email})
     .exec()
     .then(user=> {
