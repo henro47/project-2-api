@@ -2,6 +2,7 @@ const express = require('express') ;
 const router = express.Router();
 const User = require('../models/userSchema');
 const mongoose = require('mongoose');
+const bycrypt = require('bcrypt');
 
 router.get('/',(req, res, next) => {
     User.find()
@@ -25,17 +26,6 @@ router.get('/',(req, res, next) => {
             })
         }
         res.status(200).json(response);
-        /*if(docs.length >= 0)
-        {
-            
-        }
-        else
-        {
-            res.status(404).json({
-                message: 'No entries found'
-            });
-        }*/
-        
     })
     .catch(err => {
         console.log(err);
@@ -173,6 +163,40 @@ router.delete('/:userId', (req, res, next) =>{
             error: err
         });
     });
+});
+
+router.post('/signup',(req, res, next) =>{
+    bycrypt.hash(req.body.password, 10, (err, hash) => {
+        if(err)
+        {
+            return res.status(500).json({
+                error: err
+            });
+        }
+        else 
+        {
+            const user = new User({
+                _id : new mongoose.Types.ObjectId(),
+                email: req.body.email,
+                password: hash
+            });
+            user.save()
+            .then(result => {
+                console.log(result);
+                res.status(201).json({
+                    message: 'user created'
+                });
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(500).json({
+                    error: err
+                });
+            });
+        }
+    });
+
+   
 });
 
 module.exports = router;
