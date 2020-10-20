@@ -3,6 +3,8 @@ const router = express.Router();
 const User = require('../models/userSchema');
 const mongoose = require('mongoose');
 const bycrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 router.get('/',(req, res, next) => {
     User.find()
@@ -230,8 +232,16 @@ router.post('/login', (req, res, next) =>{
            
             if(result)
             {
+                const token = jwt.sign({
+                    email: user[0].email,
+                    userId: user[0]._id
+                },
+                process.env.JWT_KEY,
+                {expiresIn:'1h'});
+
                 return res.status(200).json({
-                    message: 'Auth successful' 
+                    message: 'Auth successful',
+                    token: token 
                 });
             }
 
