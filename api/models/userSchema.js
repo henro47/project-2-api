@@ -1,3 +1,4 @@
+const e = require('express');
 const mongoose = require('mongoose');
 
 const userSchema =  mongoose.Schema({
@@ -6,7 +7,7 @@ const userSchema =  mongoose.Schema({
     fName: {type: String, default: 'empty'},
     lName: {type: String, default: 'empty'},
     contact: {type: String, default: 'empty'},
-    national: {Type: String, default: 'empty'},
+    national: {type: String, default: 'empty'},
     email: {type: String, required: true},
     password : {type: String, required: true}    
 });
