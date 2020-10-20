@@ -72,7 +72,7 @@ router.get('/:userId', (req, res, next) =>{
     });
 });
 
-router.post('/', checkAuth ,(req, res, next) =>{
+/*router.post('/', checkAuth ,(req, res, next) =>{
 
     const user = new User({
         _id: new mongoose.Types.ObjectId(),
@@ -110,7 +110,7 @@ router.post('/', checkAuth ,(req, res, next) =>{
             error: err
         });
     });
-});
+});*/
 
 router.patch('/:userId', checkAuth ,(req, res, next) =>{
     const id = req.params.userId;
