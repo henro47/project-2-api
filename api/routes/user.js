@@ -85,7 +85,10 @@ router.post('/',(req, res, next) =>{
         idNum: req.body.idNum,
         fName: req.body.fName,
         lName: req.body.lName,
-        email: req.body.email
+        contact: req.body.contact,
+        national: req.body.national,
+        email: req.body.email,
+        password: req.body.password
     });
     user.save().then(result =>{
         console.log(result);
@@ -96,7 +99,10 @@ router.post('/',(req, res, next) =>{
                 idNum : result.idNum,
                 fName : result.fName,
                 lName : result.lName,
+                contact: result.contact,
+                national: result.national,
                 email : result.email,
+                password: result.password,
                 request : {
                     Type : 'GET',
                     url: 'https://project-2-api-hfr.herokuapp.com/user/' + result._id
@@ -153,7 +159,10 @@ router.delete('/:userId', (req, res, next) =>{
                     id : 'String',
                     fName : 'String',
                     lName : 'String',
-                    email : 'String'
+                    contact: 'String',
+                    national: 'String',
+                    email : 'String',
+                    password: 'String'
                 }
             }
         });
