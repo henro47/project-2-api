@@ -36,8 +36,7 @@ exports.user_get_all = (req, res, next) => {
 }
 
 exports.user_get_single = (req, res, next) =>{
-    const id = req.params.userId;
-    User.findById(id)
+    User.find({email: req.params.email})
     .select('_id idNum fName lName email')
     .exec()
     .then(doc => {
@@ -68,8 +67,9 @@ exports.user_get_single = (req, res, next) =>{
     });
 }
 
+//Change to find user by email
 exports.user_patch = (req, res, next) =>{
-    const id = req.params.userId;
+    const id = req.params.email;
     const updateOps = {};
 
     for(const ops of req.body)
@@ -77,7 +77,7 @@ exports.user_patch = (req, res, next) =>{
         updateOps[ops.propName] = ops.value;
     }
 
-    User.update({_id: id}, {$set: updateOps}).exec()
+    User.update({email: id}, {$set: updateOps}).exec()
     .then(result => {
         res.status(200).json({
             message: 'User updated',
@@ -96,9 +96,10 @@ exports.user_patch = (req, res, next) =>{
 
 }
 
+//change to find user by email
 exports.user_delete = (req, res, next) =>{
-    const id = req.params.userId;
-    User.remove({_id: id}).exec()
+    const id = req.params.email;
+    User.remove({email: id}).exec()
     .then(result => {
         res.status(200).json({
             message : 'User deleted successfully',

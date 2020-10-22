@@ -9,11 +9,11 @@ require('dotenv').config();
 
 router.get('/',checkAuth,UserController.user_get_all);
 
-router.get('/:userId', checkAuth, UserController.user_get_single );
+router.get('/:email', checkAuth, UserController.user_get_single );
 
-router.patch('/:userId', checkAuth , UserController.user_patch);
+router.patch('/:email', checkAuth , UserController.user_patch);
 
-router.delete('/:userId', checkAuth, UserController.user_delete);
+router.delete('/:email', checkAuth, UserController.user_delete);
 
 router.post('/signup', UserController.user_signup);
 
