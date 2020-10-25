@@ -9,7 +9,9 @@ const userRoute = require('./api/routes/user');
 
 mongoose.connect('mongodb+srv://admin:' + process.env.DB_PASSWORD + '@node-rest-api.iszlv.mongodb.net/' + process.env.DB_NAME +'?retryWrites=true&w=majority',{
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useFindAndModify: false
 });
 
 mongoose.Promise = global.Promise;
