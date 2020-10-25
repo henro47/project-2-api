@@ -1,6 +1,6 @@
 const User = require('../models/userSchema');
 const mongoose = require('mongoose');
-const bycrypt = require('bcrypt');
+const bycrypt = require('bcrypt-nodejs');
 const jwt = require('jsonwebtoken');
 
 exports.user_get_all = (req, res, next) => {
