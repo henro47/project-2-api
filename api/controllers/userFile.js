@@ -15,7 +15,8 @@ exports.uploadFile = (req, res, next) => {
         }
         const file = new UserFile({
           _id: mongoose.Types.ObjectId(),
-          userFile: req.body.userFile
+          user : req.params.email,
+          userFile: req.file.path
         });
         return file.save();
       })
