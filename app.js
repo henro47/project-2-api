@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 require('dotenv').config();
 
 const userRoute = require('./api/routes/user');
+const userFileRoute = require('./api/routes/userFile');
 
 mongoose.connect('mongodb+srv://admin:' + process.env.DB_PASSWORD + '@node-rest-api.iszlv.mongodb.net/' + process.env.DB_NAME +'?retryWrites=true&w=majority',{
     useNewUrlParser: true,
@@ -36,6 +37,7 @@ app.use((req, res, next) => {
 })
 
 app.use('/user',userRoute);
+app.use('/userFile',userFileRoute);
 
 app.use((req, res, next) => {
     const error = new Error('Not found!');
