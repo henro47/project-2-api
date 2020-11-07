@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
 const UserFile = require('../models/userFileSchema');
-const User = require('../models/userSchema');
-
-
+const fs = require('fs');
 
 exports.uploadFile = (req, res, next) => {
     const id = req.params.email;
@@ -33,3 +31,22 @@ exports.uploadFile = (req, res, next) => {
         });
       });
   };
+
+  exports.deleteFile = (req, res, next) => {
+    const id = req.params.email;
+    UserFile.remove({email: id}).exec()
+    .then(result => {
+      fs.unlink('file path here', (output) =>{
+        console.log(output);
+      });
+      res.status(200).json({
+        message : 'User deleted successfully'    
+      });
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json({
+            error: err
+        });
+    });
+  }
