@@ -1,7 +1,12 @@
 const mongoose = require('mongoose');
 const UserFile = require('../models/userFileSchema');
 const fs = require('fs');
-const ReadUserFile = require('../scripts/readUserFile');
+
+function getFileData(filePath)
+{
+  var array = fs.readFileSync(filePath).toString().split('\n');
+  console.log(array);
+}
 
 exports.uploadFile = (req, res, next) => {
     const id = req.params.email;
@@ -17,7 +22,9 @@ exports.uploadFile = (req, res, next) => {
           user : req.params.email,
           userFile: req.file.path
         });
-        ReadUserFile.readFileFromInput(req.file.path);
+        
+        getFileData(req.file.path);
+
         return file.save();
       })
       .then(result => {
