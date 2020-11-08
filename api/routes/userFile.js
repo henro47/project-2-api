@@ -32,8 +32,7 @@ const storage = multer.diskStorage({
   });
 
 
-router.post('/upload/:email', checkAuth, upload.single('user-file') ,FileController.uploadFile);
+router.post('/upload/:email', upload.single('user-file') ,FileController.uploadFile);
 
-router.delete('/:email',FileController.deleteFile);
 
 module.exports = router;

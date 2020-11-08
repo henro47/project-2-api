@@ -4,7 +4,7 @@ const fs = require('fs');
 
 exports.uploadFile = (req, res, next) => {
     const id = req.params.email;
-    User.find({email: id}).exec()
+    UserFile.find({email: id}).exec()
       .then(user => {
         if (!user) {
           return res.status(404).json({
@@ -19,9 +19,21 @@ exports.uploadFile = (req, res, next) => {
         return file.save();
       })
       .then(result => {
-        console.log(result);
-        res.status(201).json({
-          message: "file stored"
+        const u_email = req.params.email;
+        UserFile.remove({email: u_email}).exec()
+        .then(result => {
+          fs.unlink(req.file.path, (output) =>{
+            console.log(output);
+          });
+          res.status(200).json({
+            message : 'File uploaded and deleted'    
+          });
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
         });
       })
       .catch(err => {
@@ -31,22 +43,3 @@ exports.uploadFile = (req, res, next) => {
         });
       });
   };
-
-  exports.deleteFile = (req, res, next) => {
-    const id = req.params.email;
-    UserFile.remove({email: id}).exec()
-    .then(result => {
-      fs.unlink('file path here', (output) =>{
-        console.log(output);
-      });
-      res.status(200).json({
-        message : 'User deleted successfully'    
-      });
-    })
-    .catch(err => {
-        console.log(err);
-        res.status(500).json({
-            error: err
-        });
-    });
-  }
