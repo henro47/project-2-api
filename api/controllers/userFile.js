@@ -78,7 +78,7 @@ exports.uploadFile = (req, res, next) => {
             console.log(output);
           });
           res.status(200).json({
-            message : 'File uploaded and deleted' ,  
+            message : 'File uploaded and deleted successfully' ,  
             userData : data 
           });
         })
