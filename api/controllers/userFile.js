@@ -40,8 +40,8 @@ function getFileData(filePath)
 
   const userData = {
     idNum: usrId,
-    fName: name,
-    lName: lastName,
+    firstName: name,
+    lastName: lastName,
     contact: contactNum,
     national: nationality
   }
