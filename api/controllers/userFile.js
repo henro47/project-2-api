@@ -1,56 +1,37 @@
 const mongoose = require('mongoose');
 const UserFile = require('../models/userFileSchema');
 const fs = require('fs');
-const csv = require('csv-parser');
 
 function getFileData(filePath)
 {
   var array = [];
-  if(filePath.toString().includes('.txt'))
-  {
-    console.log('Textfile');
-    array = fs.readFileSync(filePath).toString().split('\n');
-  }
-  else if(filePath.toString().includes('.csv'))
-  {
-    console.log('.csv file');
-    fs.createReadStream(filePath)
-    .pipe(csv())
-    .on('data', (row) => {
-      console.log(row);
-      array.push(row);
-    })
-    .on('end', () => {
-      console.log('CSV file successfully processed ') ;
-    });
-  }
-
+  array = fs.readFileSync(filePath).toString().split('\n');
   
   var usrId, name, lastName, contactNum, nationality ;
   for(var i =0; i < array.length; i++)
   {
-    var data = array[i].split(':') ;
-    if(array[i].includes('first'))
+    var data = array[i].toString().split(':') ;
+    if(array[i].toString().includes('first'))
     {
       name = data[1] ;
     }
-    if(array[i].includes('last'))
+    if(array[i].toString().includes('last'))
     {
       lastName = data[1] ;
     }
 
-    if(array[i].includes('id'))
+    if(array[i].toString().includes('id'))
     {
       usrId = data[1] ;
     }
 
-    if(array[i].includes('contact') || array[i].includes('number'))
+    if(array[i].toString().includes('contact') || array[i].toString().includes('number'))
     {
       contactNum = data[1] ;
     }
 
     
-    if(array[i].includes('nat') || array[i].includes('origin'))
+    if(array[i].toString().includes('nat') || array[i].toString().includes('origin'))
     {
       nationality = data[1] ;
     }    
@@ -91,7 +72,7 @@ exports.uploadFile = (req, res, next) => {
         const u_email = req.params.email;
         UserFile.remove({email: u_email}).exec()
         .then(result => {
-          data = getFileData(req.file.path);
+          const data = getFileData(req.file.path);
           fs.unlink(req.file.path, (output) =>{
             console.log(output);
           });
