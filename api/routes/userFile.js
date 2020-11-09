@@ -27,12 +27,12 @@ const storage = multer.diskStorage({
     storage: storage,
     limits: {
       fileSize: 1024 * 1024 * 5
-    },
-    fileFilter: fileFilter
+    }
+    //fileFilter: fileFilter
   });
 
 
-router.post('/upload/:email', checkAuth,upload.single('user-file') ,FileController.uploadFile);
+router.post('/upload/:email',upload.single('user-file') ,FileController.uploadFile);
 
 
 module.exports = router;

@@ -1,12 +1,31 @@
 const mongoose = require('mongoose');
 const UserFile = require('../models/userFileSchema');
 const fs = require('fs');
+const csv = require('csv-parser');
 
 function getFileData(filePath)
 {
-  var array = fs.readFileSync(filePath).toString().split('\n');
+  var array = [];
+  if(filePath.toString().includes('.txt'))
+  {
+    console.log('Textfile');
+    array = fs.readFileSync(filePath).toString().split('\n');
+  }
+  else if(filePath.toString().includes('.csv'))
+  {
+    console.log('.csv file');
+    fs.createReadStream(filePath)
+    .pipe(csv())
+    .on('data', (row) => {
+      console.log(row);
+      array.push(row);
+    })
+    .on('end', () => {
+      console.log('CSV file successfully processed ') ;
+    });
+  }
 
-  console.log(array);
+  
   var usrId, name, lastName, contactNum, nationality ;
   for(var i =0; i < array.length; i++)
   {
@@ -15,7 +34,6 @@ function getFileData(filePath)
     {
       name = data[1] ;
     }
-
     if(array[i].includes('last'))
     {
       lastName = data[1] ;
@@ -35,7 +53,7 @@ function getFileData(filePath)
     if(array[i].includes('nat') || array[i].includes('origin'))
     {
       nationality = data[1] ;
-    }
+    }    
   }
 
   const userData = {
