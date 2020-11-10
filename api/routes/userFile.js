@@ -14,24 +14,16 @@ const storage = multer.diskStorage({
     }
   });
   
-  const fileFilter = (req, file, cb) => {
-    // reject a file
-    if (file.mimetype === 'text/plain' || file.mimetype === 'text/csv') {
-      cb(null, true);
-    } else {
-      cb(null, false);
-    }
-  };
   
   const upload = multer({
     storage: storage,
     limits: {
       fileSize: 1024 * 1024 * 5
-    },
-    fileFilter: fileFilter
+    }
   });
 
 
-router.post('/upload/:email', checkAuth, upload.single('user-file') ,FileController.uploadFile);
+router.post('/upload/:email', checkAuth,upload.single('user-file') ,FileController.uploadFile);
+
 
 module.exports = router;
