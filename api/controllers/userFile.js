@@ -1,37 +1,35 @@
 const mongoose = require('mongoose');
 const UserFile = require('../models/userFileSchema');
 const fs = require('fs');
+const xlsx = require('node-xlsx');
 
-function getFileData(filePath)
+function classifyTextData(dataArray)
 {
-  var array = [];
-  array = fs.readFileSync(filePath).toString().split('\n');
-  
   var usrId, name, lastName, contactNum, nationality ;
-  for(var i =0; i < array.length; i++)
+  for(var i =0; i < dataArray.length; i++)
   {
-    var data = array[i].toString().split(':') ;
-    if(array[i].toString().includes('first'))
+    var data = dataArray[i].toString().split(':') ;
+    if(dataArray[i].toString().includes('first'))
     {
       name = data[1] ;
     }
-    if(array[i].toString().includes('last'))
+    if(dataArray[i].toString().includes('last'))
     {
       lastName = data[1] ;
     }
 
-    if(array[i].toString().includes('id'))
+    if(dataArray[i].toString().includes('id'))
     {
       usrId = data[1] ;
     }
 
-    if(array[i].toString().includes('contact') || array[i].toString().includes('number'))
+    if(dataArray[i].toString().includes('contact') || dataArray[i].toString().includes('number'))
     {
       contactNum = data[1] ;
     }
 
     
-    if(array[i].toString().includes('nat') || array[i].toString().includes('origin'))
+    if(dataArray[i].toString().includes('nat') || dataArray[i].toString().includes('origin'))
     {
       nationality = data[1] ;
     }    
@@ -44,11 +42,85 @@ function getFileData(filePath)
     contact: contactNum,
     national: nationality
   }
-
-  console.log(userData);
-
+  
   return userData;
+}
 
+function classifyExcelData(dataArray)
+{
+ 
+  var usrId, name, lastName, contactNum, nationality ;
+  var info = dataArray[0][1].toString().split(',');
+  for(var i in info)
+  {
+    var data = info[i].toString().split(':');
+    if(info[i].toString().includes('first'))
+    {
+      name = data[1];
+    }
+
+    if(info[i].toString().includes('last'))
+    {
+      lastName = data[1];
+    }
+
+    if(info[i].toString().includes('id'))
+    {
+      usrId = data[1];
+    }
+
+    if(info[i].toString().includes('contact') || info[i].toString().includes('number'))
+    {
+      contactNum = data[1];
+    }
+
+    if(info[i].toString().includes('nat') || info[i].toString().includes('origin'))
+    {
+      nationality = data[1];
+    }
+
+
+  }
+ 
+
+  const userData = {
+    idNum: usrId,
+    firstName: name,
+    lastName: lastName,
+    contact: contactNum,
+    national: nationality
+  }
+  
+  return userData;
+  
+}
+
+
+function getFileData(filePath)
+{
+  var array = [];
+  var userClassifiedData ;
+  if(filePath.toString().includes('.txt') ||filePath.toString().includes('.csv'))
+  {
+    array = fs.readFileSync(filePath).toString().split('\n');
+    userClassifiedData = classifyTextData(array);
+  }
+  else if(filePath.toString().includes('.xlsx'))
+  {
+    var excelObj = xlsx.parse(fs.readFileSync(filePath));
+    for(var i in excelObj)
+    {
+     array.push(Object.values(excelObj[i]));
+    }
+    userClassifiedData = classifyExcelData(array);
+  }
+  else
+  {
+    return;
+  }
+  console.log(userClassifiedData);
+
+  return userClassifiedData;
 }
 
 
