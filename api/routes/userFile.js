@@ -2,7 +2,6 @@ const express = require('express') ;
 const router = express.Router();
 const multer = require('multer');
 const checkAuth = require('../middleware/check-auth');
-const checkUploadDir = require('../middleware/checkUploadPath')
 const FileController = require('../controllers/userFile') ;
 require('dotenv').config();
 
@@ -24,7 +23,7 @@ const storage = multer.diskStorage({
   });
 
 
-router.post('/upload/:email',checkUploadDir,checkAuth,upload.single('user-file') ,FileController.uploadFile);
+router.post('/upload/:email',checkAuth,upload.single('user-file') ,FileController.uploadFile);
 
 
 module.exports = router;
